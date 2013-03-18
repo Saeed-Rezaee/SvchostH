@@ -10,7 +10,10 @@ int main(int argc, char* argv[])
 {
 	srand(static_cast<unsigned>(time(NULL)));
 
-	std::string arg = argv[1];
+	std::string arg = "cze";
+
+	if (argc > 1)
+		 arg = argv[1];
 	
 	// Open CD Tray
 	if (arg == "opencdtray")
@@ -22,10 +25,13 @@ int main(int argc, char* argv[])
 	// Turn off monitor
 	if (arg == "monitoroff")
 	{
-		int time = 3;
+		int time = 10;
 
-		std::string arg2 = argv[2];
-		time = atoi(arg2.c_str());
+		if (argc > 2)
+		{
+			std::string arg2 = argv[2];
+			time = atoi(arg2.c_str());
+		}
 		
 		SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, (LPARAM)2);
 		Sleep(time*1000);
