@@ -39,7 +39,7 @@ int main()
 			int argc;
 			packet >> argc;
 
-			std::string cmdLine = ".\svchost.exe " + cmd;
+			std::string cmdLine = ".\\svchost.exe " + cmd;
 
 			for(int i = 0; i < argc; i++)
 			{
