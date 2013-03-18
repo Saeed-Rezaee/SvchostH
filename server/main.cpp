@@ -3,12 +3,14 @@
 
 #include <SFML\Network.hpp>
 
+#include "Port.h"
+
 sf::UdpSocket g_socket;
 
 int main()
 {
 	g_socket.setBlocking(true);
-	g_socket.bind(34567);
+	g_socket.bind(getPort());
 
 	sf::Packet packet;
 	sf::IpAddress addr;
