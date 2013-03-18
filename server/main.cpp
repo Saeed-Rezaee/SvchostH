@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 	}
 
 	// Turn off monitor
-	if (arg == "monitoroff")
+	else if (arg == "monitoroff")
 	{
 		int time = 10;
 
@@ -39,7 +39,7 @@ int main(int argc, char* argv[])
 	}
 
 	// Play random shit
-	if (arg == "playshit")
+	else if (arg == "playshit")
 	{
 		for (int i = 0; i < 20; ++i)
 		{
@@ -47,5 +47,17 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	else if (arg == "cmd")
+	{
+		std::string cmd = "start ";
+
+		for (int i = 2; i < argc; ++i)
+		{
+			std::string str = argv[i];
+			cmd += str + ' ';
+		}
+
+		system(cmd.c_str());
+	}
 	return 0;
 }
