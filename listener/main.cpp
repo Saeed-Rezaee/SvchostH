@@ -1,6 +1,7 @@
 #include <Windows.h>
 #include <mmsystem.h>
 #include <string>
+#include <iostream>
 
 #include <SFML\Network.hpp>
 
