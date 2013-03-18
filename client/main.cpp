@@ -27,17 +27,17 @@ sf::Packet parseCommand(std::string cmd)
 	std::string buffer;
 
 	std::string command;
-	int argc = -1;
+	bool cmdSet = false;
 	std::vector<std::string> args;
 	for(unsigned i = 0; i < cmd.size(); i++)
 	{
 		if(cmd[i] == ' ')
 		{
-			if(argc == -1)
+			if(cmdSet == false)
 			{
 				command = buffer;
 				buffer.clear();
-				argc++;
+				cmdSet = true;
 			}
 			else
 			{
@@ -47,7 +47,8 @@ sf::Packet parseCommand(std::string cmd)
 		}
 		else buffer += cmd[i];
 	}
-	args.push_back(buffer);
+	if(cmdSet == false) command = buffer; 
+	else args.push_back(buffer);
 
 	packet << command;
 	packet << static_cast<int>(args.size());
