@@ -1,5 +1,6 @@
 #include <iostream>
 #include <conio.h>
+#include <sstream>
 
 #include <SFML\Network.hpp>
 
@@ -19,26 +20,61 @@ void sendToAll(std::string cmd)
 	}
 }
 
+sf::Packet parseCommand(std::string cmd)
+{
+	sf::Packet packet;
+
+	std::string buffer;
+
+	std::string command;
+	int argc = -1;
+	std::vector<std::string> args;
+	for(unsigned i = 0; i < cmd.size(); i++)
+	{
+		if(cmd[i] == ' ')
+		{
+			if(argc == -1)
+			{
+				command = buffer;
+				buffer.clear();
+				argc++;
+			}
+			else
+			{
+				args.push_back(buffer);
+				buffer.clear();
+			}
+		}
+		else buffer += cmd[i];
+	}
+	args.push_back(buffer);
+
+	packet << command;
+	packet << static_cast<int>(args.size());
+	for(unsigned i = 0; i < args.size(); i++) packet << args[i];
+
+	return packet;
+}
+
 int main()
 {
 	sf::IpAddress addr;
 	unsigned int port = getPort();
 
-	std::cout << "Podaj adres ip: ";
+	std::cout << "Enter target ip: ";
 	std::cin >> addr;
+	std::cin.ignore();
 
-
-	int command = -1;
-	while (command != 0)
+	std::string cmd = "";
+	while (cmd != "exit")
 	{
 		system("cls");
 
-		std::cout << "Podaj numer komendy do wykonania: ";
-		std::cin >> command;
+		std::cout << "Enter desired command: ";
+		std::getline(std::cin, cmd);
 
 		sf::Packet packet;
-		packet << command;
-		g_socket.send(packet, addr, port);
+		g_socket.send(parseCommand(cmd), addr, port);
 
 		std::cout << "Pakiet wyslany!" << std::endl;
 		_getch();
