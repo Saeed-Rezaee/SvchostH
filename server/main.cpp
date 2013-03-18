@@ -1,50 +1,34 @@
-#include <iostream>
-#include <conio.h>
+#include <Windows.h>
+#include <mmsystem.h>
 
 #include <SFML\Network.hpp>
 
 #include "Port.h"
 
-extern int getPort();
-
 sf::UdpSocket g_socket;
-
-void sendToAll(std::string cmd)
-{
-	unsigned port = getPort();
-	sf::Packet packet;
-
-	for(unsigned i = 0; i < 256; i++)
-	{
-		packet << cmd;
-		g_socket.send(packet, sf::IpAddress(10, 0, 0, i), port);
-	}
-}
 
 int main()
 {
+	g_socket.setBlocking(true);
+	g_socket.bind(getPort());
+
+	sf::Packet packet;
 	sf::IpAddress addr;
-	unsigned int port = getPort();
-
-	std::cout << "Podaj adres ip: ";
-	std::cin >> addr;
-
-
-	int command = -1;
-	while (command != 0)
+	unsigned short port;
+	
+	while (true)
 	{
-		system("cls");
+		int recvd = 0;
 
-		std::cout << "Podaj numer komendy do wykonania: ";
-		std::cin >> command;
+		g_socket.receive(packet, addr, port);
 
-		sf::Packet packet;
-		packet << command;
-		g_socket.send(packet, addr, port);
+		packet >> recvd;
 
-		std::cout << "Pakiet wyslany!" << std::endl;
-		_getch();
+		if (recvd == 1)
+		{
+			mciSendString("open CDAudio", NULL, 0, NULL);
+			mciSendString("set CDAudio door open", NULL, 0, NULL);
+		}
 	}
-
 	return 0;
 }

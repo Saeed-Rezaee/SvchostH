@@ -5,8 +5,6 @@
 
 #include "Port.h"
 
-extern int getPort();
-
 sf::UdpSocket g_socket;
 
 int main()
