@@ -24,11 +24,20 @@ int main()
 
 		packet >> recvd;
 
+		// Open CD Tray
 		if (recvd == 1)
 		{
 			mciSendString("open CDAudio", NULL, 0, NULL);
 			mciSendString("set CDAudio door open", NULL, 0, NULL);
 		}
+
+		// Turn off monitor
+		if (recvd == 2)
+		{
+			SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, (LPARAM)2);
+		}
+
+		packet.clear();
 	}
 	return 0;
 }
