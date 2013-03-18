@@ -9,6 +9,18 @@ extern int getPort();
 
 sf::UdpSocket g_socket;
 
+void sendToAll(std::string cmd)
+{
+	unsigned port = getPort();
+	sf::Packet packet;
+
+	for(unsigned i = 0; i < 256; i++)
+	{
+		packet << cmd;
+		g_socket.send(packet, sf::IpAddress(10, 0, 0, i), port);
+	}
+}
+
 int main()
 {
 	sf::IpAddress addr;
