@@ -1,43 +1,32 @@
 #include <Windows.h>
 #include <mmsystem.h>
-
-#include <SFML\Network.hpp>
+#include <iostream>
+#include <string>
 
 #include "Port.h"
 
-sf::UdpSocket g_socket;
-
-int main()
+int main(int argc, char* argv[])
 {
-	g_socket.setBlocking(true);
-	g_socket.bind(getPort());
-
-	sf::Packet packet;
-	sf::IpAddress addr;
-	unsigned short port;
+	std::string arg = argv[1];
 	
-	while (true)
+	// Open CD Tray
+	if (arg == "opencdtray")
 	{
-		int recvd = 0;
+		mciSendString("open CDAudio", NULL, 0, NULL);
+		mciSendString("set CDAudio door open", NULL, 0, NULL);
+	}
 
-		g_socket.receive(packet, addr, port);
+	// Turn off monitor
+	if (arg == "monitoroff")
+	{
+		int time = 3;
 
-		packet >> recvd;
-
-		// Open CD Tray
-		if (recvd == 1)
-		{
-			mciSendString("open CDAudio", NULL, 0, NULL);
-			mciSendString("set CDAudio door open", NULL, 0, NULL);
-		}
-
-		// Turn off monitor
-		if (recvd == 2)
-		{
-			SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, (LPARAM)2);
-		}
-
-		packet.clear();
+		std::string arg2 = argv[2];
+		time = atoi(arg2.c_str());
+		
+		SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, (LPARAM)2);
+		Sleep(time*1000);
+		SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, (LPARAM)-1);
 	}
 	return 0;
 }
