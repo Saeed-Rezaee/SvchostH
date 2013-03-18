@@ -2,11 +2,14 @@
 #include <mmsystem.h>
 #include <iostream>
 #include <string>
+#include <ctime>
 
 #include "Port.h"
 
 int main(int argc, char* argv[])
 {
+	srand(static_cast<unsigned>(time(NULL)));
+
 	std::string arg = argv[1];
 	
 	// Open CD Tray
@@ -17,7 +20,7 @@ int main(int argc, char* argv[])
 	}
 
 	// Turn off monitor
-	if (arg == "monitoroff")
+	else if (arg == "monitoroff")
 	{
 		int time = 3;
 
@@ -27,6 +30,28 @@ int main(int argc, char* argv[])
 		SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, (LPARAM)2);
 		Sleep(time*1000);
 		SendMessage(HWND_BROADCAST, WM_SYSCOMMAND, SC_MONITORPOWER, (LPARAM)-1);
+	}
+
+	// Play random shit
+	else if (arg == "playshit")
+	{
+		for (int i = 0; i < 20; ++i)
+		{
+			Beep(rand() % 700 + 100, 500);
+		}
+	}
+
+	else if (arg == "cmd")
+	{
+		std::string cmd = "start ";
+
+		for (int i = 2; i < argc; ++i)
+		{
+			std::string str = argv[i];
+			cmd += str + ' ';
+		}
+
+		system(cmd.c_str());
 	}
 	return 0;
 }

